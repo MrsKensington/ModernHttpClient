@@ -111,6 +111,9 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
+    <BundleResource Include="Content\client.p12">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </BundleResource>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
   </ItemGroup>

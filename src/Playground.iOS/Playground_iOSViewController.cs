@@ -82,7 +82,7 @@ namespace Playground.iOS
             try {
                 handler.DisableCaching = true;
                 var url = "https://github.com/paulcbetts/ModernHttpClient/releases/download/0.9.0/ModernHttpClient-0.9.zip";
-             
+                url = "https://test.triplesport.net:4443/secure.txt";
 
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 handler.RegisterForProgress(request, HandleDownloadProgress);

@@ -273,6 +273,32 @@ namespace ModernHttpClient
                     return;
                 }
 
+                if (challenge.ProtectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodClientCertificate)
+                {
+                    Console.WriteLine("Client Cert!");
+
+                    var password = "MjMwZTM0OTc1NWJk";
+                    var options = NSDictionary.FromObjectAndKey(NSObject.FromObject(password), SecImportExport.Passphrase);
+
+                    var path = Path.Combine(NSBundle.MainBundle.BundlePath, "Content", "client.p12");
+                    var certData = File.ReadAllBytes(path);
+
+                    NSDictionary[] importResult;
+
+                    X509Certificate cert = new X509Certificate(certData, password);
+
+                    SecStatusCode statusCode = SecImportExport.ImportPkcs12(certData, options, out importResult);
+                    var identityHandle = importResult[0][SecImportExport.Identity];
+                    var identity = new SecIdentity(identityHandle.ClassHandle);
+                    var certificate = new SecCertificate(cert.GetRawCertData());
+
+                    SecCertificate[] certificates = { certificate };
+                    NSUrlCredential credential = NSUrlCredential.FromIdentityCertificatesPersistance(identity, certificates, NSUrlCredentialPersistence.ForSession);
+                    completionHandler(NSUrlSessionAuthChallengeDisposition.UseCredential, credential);
+
+                    return;
+                }
+
                 if (!This.customSSLVerification) {
                     goto doDefault;
                 }
