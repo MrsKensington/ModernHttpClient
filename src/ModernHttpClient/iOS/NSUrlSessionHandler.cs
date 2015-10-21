@@ -289,7 +289,7 @@ namespace ModernHttpClient
 
                     SecStatusCode statusCode = SecImportExport.ImportPkcs12(certData, options, out importResult);
                     var identityHandle = importResult[0][SecImportExport.Identity];
-                    var identity = new SecIdentity(identityHandle.ClassHandle);
+                    var identity = new SecIdentity(identityHandle.Handle);
                     var certificate = new SecCertificate(cert.GetRawCertData());
 
                     SecCertificate[] certificates = { certificate };
